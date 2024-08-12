@@ -1,5 +1,7 @@
 <?php
 
+ob_start();
+
 // Cache dosyası ve süre
 $cacheFile = 'cache/' . urlencode($clanTag) . '.json';
 $cacheTime = 3000; // 50 dakika = 3000 saniye
@@ -306,9 +308,22 @@ if (file_exists($cacheFile) && (time() - filemtime($cacheFile)) < $cacheTime) {
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     <?php endforeach; ?>
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     </tbody>
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     </table>
+
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     </body>
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     </html>
-                                        }
+<?php
+
+// Çıkışı yakala
+$output = ob_get_clean();
+
+// Gereksiz boşlukları ve satır sonlarını kaldır
+$output = preg_replace('/\s+/', ' ', $output);
+$output = str_replace('> <', '><', $output);
+
+// Sonuç çıktısını göster
+echo $output;
+?>
+                                        
             }
 }
 }
